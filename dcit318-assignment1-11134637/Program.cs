@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace dcit318_assignment1_11134637
@@ -10,7 +11,9 @@ namespace dcit318_assignment1_11134637
     {
         static void Main(string[] args)
         {
-            GradeCalculator();
+            //GradeCalculator();
+            TicketPriceCalculator();
+
         }
 
         // Grade Calculator
@@ -49,5 +52,70 @@ namespace dcit318_assignment1_11134637
             }
         }
 
+
+
+        // Ticket Price Calculator
+        static void TicketPriceCalculator()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("=== Ticket Price Calculator ===");
+                Console.Write("\nEnter your age (1-120) or 'Q' to quit: ");
+
+                string input = Console.ReadLine().Trim();
+
+                // Check if user wants to quit
+                if (input.Equals("Q", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("\nReturning to main menu...");
+                    Thread.Sleep(1000); // Pause for 1 second
+                    return;
+                }
+
+                // Validate input
+                if (!int.TryParse(input, out int age))
+                {
+                    Console.WriteLine("\nError: Please enter a valid number or 'Q' to quit.");
+                    Console.WriteLine("Press any key to try again...");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                // Validate age range
+                if (age < 1 || age > 120)
+                {
+                    Console.WriteLine("\nError: Age must be between 1 and 120.");
+                    Console.WriteLine("Press any key to try again...");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                // Calculate price
+                decimal price = (age <= 12 || age >= 65) ? 7.00m : 10.00m;
+
+                // Display result
+                Console.WriteLine("\n=== Ticket Price ===");
+                Console.WriteLine($"Age: {age}");
+                Console.WriteLine($"Price: GHC{price:F2}");
+
+                // Show discount information if applicable
+                if (age <= 12)
+                {
+                    Console.WriteLine("(Child discount applied)");
+                }
+                else if (age >= 65)
+                {
+                    Console.WriteLine("(Senior discount applied)");
+                }
+
+                // Ask to continue
+                Console.WriteLine("\nPress any key to calculate another or 'Q' to quit...");
+                if (Console.ReadKey().Key == ConsoleKey.Q)
+                {
+                    return;
+                }
+            }
+        }
     }
 }
