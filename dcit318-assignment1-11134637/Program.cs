@@ -12,7 +12,8 @@ namespace dcit318_assignment1_11134637
         static void Main(string[] args)
         {
             //GradeCalculator();
-            TicketPriceCalculator();
+            //TicketPriceCalculator();
+            TriangleTypeIdentifier();
 
         }
 
@@ -111,6 +112,96 @@ namespace dcit318_assignment1_11134637
 
                 // Ask to continue
                 Console.WriteLine("\nPress any key to calculate another or 'Q' to quit...");
+                if (Console.ReadKey().Key == ConsoleKey.Q)
+                {
+                    return;
+                }
+            }
+        }
+
+
+        // Triangle Type Identifier
+        static void TriangleTypeIdentifier()
+        {
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("=== Triangle Type Identifier ===");
+                Console.WriteLine("\nEnter the lengths of three sides (positive numbers)");
+                Console.WriteLine("or 'Q' at any time to quit:");
+
+                double[] sides = new double[3];
+                string[] sideNames = { "First", "Second", "Third" };
+                bool validInput = true;
+
+                // Get all three sides with validation
+                for (int i = 0; i < 3; i++)
+                {
+                    Console.Write($"{sideNames[i]} side: ");
+                    string input = Console.ReadLine().Trim();
+
+                    if (input.Equals("Q", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine("\nReturning to main menu...");
+                        Thread.Sleep(1000);
+                        return;
+                    }
+
+                    if (!double.TryParse(input, out sides[i]) || sides[i] <= 0)
+                    {
+                        Console.WriteLine("\nError: Side must be a positive number.");
+                        Console.WriteLine("Press any key to try again...");
+                        Console.ReadKey();
+                        validInput = false;
+                        break;
+                    }
+                }
+
+                if (!validInput) continue;
+
+                // Check triangle validity using array values
+                if (sides[0] + sides[1] <= sides[2] ||
+                    sides[0] + sides[2] <= sides[1] ||
+                    sides[1] + sides[2] <= sides[0])
+                {
+                    Console.WriteLine("\nError: These sides cannot form a valid triangle.");
+                    Console.WriteLine("The sum of any two sides must be greater than the third side.");
+                    Console.WriteLine("Press any key to try again...");
+                    Console.ReadKey();
+                    continue;
+                }
+
+                // Determine triangle type
+                string triangleType;
+                if (sides[0] == sides[1] && sides[1] == sides[2])
+                {
+                    triangleType = "Equilateral (all sides equal)";
+                }
+                else if (sides[0] == sides[1] || sides[0] == sides[2] || sides[1] == sides[2])
+                {
+                    triangleType = "Isosceles (two sides equal)";
+                }
+                else
+                {
+                    triangleType = "Scalene (no sides equal)";
+                }
+
+                // Display results
+                Console.WriteLine("\n=== Triangle Analysis ===");
+                Console.WriteLine($"Side 1: {sides[0]}");
+                Console.WriteLine($"Side 2: {sides[1]}");
+                Console.WriteLine($"Side 3: {sides[2]}");
+                Console.WriteLine($"\nTriangle Type: {triangleType}");
+
+                // Check for right triangle (Pythagorean theorem)
+                Array.Sort(sides); // Sort to get largest side last
+                if (Math.Abs((sides[0] * sides[0] + sides[1] * sides[1]) - (sides[2] * sides[2])) < 0.0001)
+                {
+                    Console.WriteLine("Additional Property: Right-angled triangle");
+                }
+
+                // Continue or quit
+                Console.WriteLine("\nPress any key to analyze another triangle or 'Q' to quit...");
                 if (Console.ReadKey().Key == ConsoleKey.Q)
                 {
                     return;
